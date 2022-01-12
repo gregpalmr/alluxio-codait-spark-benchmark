@@ -78,7 +78,7 @@ Create a configuration file that sets up a benchmark workload that generates abo
          ]
        }]
      }
-EOT
+     EOT
 
 Run the workload and generate the data in HDFS. Use the time program to record the amount of time it takes to run the workload:
 
