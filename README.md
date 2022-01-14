@@ -133,7 +133,7 @@ Run the workload to query the data in HDFS. Use the time program to record the a
 
      time ./bin/spark-bench.sh run-csv-sql-query-hdfs.conf
 
-## Step 4. Generate the kmeans dataset in HDFS
+## Step 4. Generate the kmeans dataset in Alluxio
 
 Create a configuration file that sets up a benchmark workload that generates about XXX GB of CSV and Parquet formated data in the Alluxio virtual filesystem.
 
