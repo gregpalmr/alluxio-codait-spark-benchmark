@@ -185,7 +185,7 @@ Use the Alluxio filesystem command to see the generated files:
 
      alluxio fs ls -R /tmp/codait-spark-benchmark-alluxio
 
-## Step 4. Run the SQL Query against the CSV dataset in Alluxio
+## Step 5. Run the SQL Query against the CSV dataset in Alluxio
 
 Create a configuration file that sets up a benchmark workload that queries the CSV kmeans dataset in Alluxio:
 
@@ -226,7 +226,7 @@ Run the workload to query the data in Alluxio. Use the time program to record th
 
      time ./bin/spark-bench.sh run-csv-sql-query-alluxio.conf
 
-## Step 5. Remove the data files from HDFS and the Alluxio virtual filesystem
+## Step 6. Remove the data files from HDFS and the Alluxio virtual filesystem
 
 Run the HDFS command to remove the files in HDFS:
 
@@ -236,7 +236,7 @@ Run the Alluxio command to remove the files from the Alluxio virtual filesystem:
 
      alluxio fs rm -R /tmp/codait-spark-benchmark-alluxio
 
-## Optional Step 6. Enabled detailed debug logging
+## Optional Step 7. Enabled detailed debug logging
 
 To enable more detailed client-side logging, first create a log4j properties file, like this:
 
