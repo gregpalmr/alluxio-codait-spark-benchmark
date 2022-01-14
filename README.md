@@ -39,6 +39,10 @@ For spark jobs to access the Alluxio virtual filesystem, they must be able to lo
 
      export ALLUXIO_CLIENT_JAR=/opt/alluxio/client/alluxio-enterprise-2.7.0-2.4-client.jar
 
+For spark jobs to access the Alluxio master node, the proper server or hostname must be specified. Set an environment variable to point to your Alluxio master node:
+
+     export ALLUXIO_MASTER=localhost
+
 ## Step 2. Generate the kmeans dataset in HDFS
 
 Create a configuration file that sets up a benchmark workload that generates about XXX GB of CSV and Parquet formated data in HDFS.
@@ -150,7 +154,7 @@ Create a configuration file that sets up a benchmark workload that generates abo
          workload-suites = [
            {
              descr = "Generate a dataset to be used by benchmark queries later"
-             benchmark-output = "alluxio://28.204.15.240:19998/tmp/codait-spark-benchmark-alluxio/results-data-gen.csv"
+             benchmark-output = "alluxio://$ALLUXIO_MASTER:19998/tmp/codait-spark-benchmark-alluxio/results-data-gen.csv"
              // We need to generate the dataset first through the data generator, then we take that dataset and convert it to Parquet.
              parallel = false
              workloads = [
@@ -158,13 +162,13 @@ Create a configuration file that sets up a benchmark workload that generates abo
                  name = "data-generation-kmeans"
                  rows = 10000000
                  cols = 24
-                 output = "alluxio://28.204.15.240:19998/tmp/codait-spark-benchmark-alluxio/kmeans-data.csv"
+                 output = "alluxio://$ALLUXIO_MASTER:19998/tmp/codait-spark-benchmark-alluxio/kmeans-data.csv"
                },
                {
                  name = "sql"
                  query = "select * from input"
-                 input = "alluxio://28.204.15.240:19998/tmp/codait-spark-benchmark-alluxio/kmeans-data.csv"
-                 output = "alluxio://28.204.15.240:19998/tmp/codait-spark-benchmark-alluxio/kmeans-data.parquet"
+                 input = "alluxio://$ALLUXIO_MASTER:19998/tmp/codait-spark-benchmark-alluxio/kmeans-data.csv"
+                 output = "alluxio://$ALLUXIO_MASTER:19998/tmp/codait-spark-benchmark-alluxio/kmeans-data.parquet"
                }
              ]
            }
@@ -207,7 +211,7 @@ Create a configuration file that sets up a benchmark workload that queries the C
              workloads = [
                {
                  name = "sql"
-                 input = "alluxio://localhost:19998/tmp/codait-spark-benchmark-alluxio/kmeans-data.csv"
+                 input = "alluxio://$ALLUXIO_MASTER:19998/tmp/codait-spark-benchmark-alluxio/kmeans-data.csv"
                  query = "select c0, c22 from input where c0 < -0.9"
                  cache = false
                }
