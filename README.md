@@ -236,6 +236,31 @@ Run the Alluxio command to remove the files from the Alluxio virtual filesystem:
 
      alluxio fs rm -R /tmp/codait-spark-benchmark-alluxio
 
+## Optional Step 6. Enabled detailed debug logging
+
+To enable more detailed client-side logging, first create a log4j properties file, like this:
+
+     cat <<EOT > /tmp/log4j.properties 
+     log4j.rootCategory=debug,console
+     log4j.logger.com.demo.package=debug,console
+     log4j.additivity.com.demo.package=false
+     log4j.appender.console=org.apache.log4j.ConsoleAppender
+     log4j.appender.console.target=System.out
+     log4j.appender.console.immediateFlush=true
+     log4j.appender.console.encoding=UTF-8
+     log4j.appender.console.layout=org.apache.log4j.PatternLayout
+     log4j.appender.console.layout.conversionPattern=%d [%t] %-5p %c - %m%n
+     EOT
+
+Then, in the benchmark conf file (like run-csv-sql-query-alluxio.conf), add the log4j.configuration options to the extraJavaOptions setting. Like this:
+
+     conf = {
+       "spark.driver.extraClassPath" = "$ALLUXIO_CLIENT_JAR"
+       "spark.executor.extraClassPath" = "$ALLUXIO_CLIENT_JAR"
+       "spark.driver.extraJavaOptions" = " -Dalluxio.user.file.read.default=CACHE -Dalluxio.user.file.writetype.default=CACHE_THROUGH -Dalluxio.user.ufs.block.read.location.policy=alluxio.client.block.policy.DeterministicHashPolicy -Dalluxio.user.ufs.block.read.location.policy.deterministic.hash.shards=2 -Dlog4j.configuration=log4j.properties -Dlog4j.configuration=file:/tmp/log4j.properties"
+       "spark.executor.extraJavaOptions" = " -Dalluxio.user.file.read.default=CACHE -Dalluxio.user.file.writetype.default=CACHE_THROUGH -Dalluxio.user.ufs.block.read.location.policy=alluxio.client.block.policy.DeterministicHashPolicy -Dalluxio.user.ufs.block.read.location.policy.deterministic.hash.shards=2 -Dlog4j.configuration=log4j.properties -Dlog4j.configuration=file:/tmp/log4j.properties"
+     }
+
 ---
 
 Please direct comments and questions to greg.palmer@alluxio.com
